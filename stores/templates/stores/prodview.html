@@ -1,0 +1,45 @@
+{% extends 'stores/main.html' %}
+
+{% block content %}
+{% block title%} {{product.name}} At OurMart {% endblock %}
+<style type="text/css">
+h4{
+		color: blue;
+		font-size: 20px;
+	}
+.pic{
+		float: left;
+		margin: 0 0 20px 20px;
+		border: transparent;
+		border: ridge;
+	}
+</style>
+
+    <div class="container my-4">
+    <div class="row">
+    <div class="col-md-4">
+    <div class="row">
+        <img src="{{product.image.url}}" width="200px" height="300px" class="pic" >
+        
+    </div>
+<form action="/" method="POST" class="btn-block">
+                    {% csrf_token %}
+                    <input hidden type="text" name="product" value="{{product.id}}">
+                    <input type="submit" class="btn btn-outline-secondary" value="Add to Cart">
+                </form>
+    </div>
+    <div class="col-mt-3">
+    <div class="col-md-8">
+    	<h4>Product Id: 500{{product.id}}</h4>
+        <h6><b>{{product.name}}</b></h6>
+        <p>{{product.description}}</p>
+        <p><b>Rs.{{product.price}} </b></p>
+     </div>
+    </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

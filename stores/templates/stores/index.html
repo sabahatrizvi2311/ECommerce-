@@ -1,0 +1,59 @@
+{% include 'stores/main.html' %}
+
+{% block content %}
+
+{% load cart %}
+
+<div class="contaier-fluid mt-3 mx-auto mb-2">
+<div class="row">
+	<!--filet cat-->
+	<div class="col-lg-3 mx-auto">
+		<div class="list-group row mx-auto">
+			<h4>Categories</h4>
+			<a href="/" class="list-group-item list-group-item-action">All Products</a>
+			{% for category in categories %}
+			<a href="/?category={{category.id}}" class="list-group-item list-group-item-action">{{category.id}}: {{category.subcategory}}</a>
+			{% endfor %}
+		</div>			
+	</div>
+	<!--all products-->
+	<div id="products" class="col-lg-8 mx-auto">
+		<div class="row mx-auto" >
+			{% for product in products %}
+			<div class="card" style="width: 13rem;">
+            <a href="/prodview/{{product.id}}" class="float-right">
+			  <img src="{{product.image.url}}" class="card-img-top" alt=""></a>
+			  <div class="card-body">
+			    <h5 class="card-title">{{product.name}}</h5>
+			    <p class="card-text">{{product.description|slice:"0:30"}}..</p>
+			    <h5 class="card-text">{{product.price}}</h5>
+			    <!--Cart-->
+			    {% if true %}
+
+			    {{product | is_in_cart:request.session.cart}}
+			    
+			    {% endif %}
+
+			    <div class="card-footer p-0 ">
+			    {% if product|is_in_cart:request.session.cart %}
+				  <div class="row no-gutters">
+				  	<input type="submit" value=" - " class="col-2 btn btn-block btn-outline-secondary" name="">
+				  	<div class="text-center col">{{product|cart_quantity:request.session.cart}} in cart</div>
+				  	<input type="submit" value=" + " class="col-2 btn btn-block btn-outline-secondary" name="">
+				  </div>
+				{% else %}
+				<form action="/" method="POST" class="btn-block">
+			    	{% csrf_token %}
+			    	<input hidden type="text" name="product" value="{{product.id}}">
+	                <input type="submit" class="btn btn-outline-secondary" value="Add to Cart">
+			    </form>
+				{% endif %}
+			    </div>
+			  </div>
+			</div>
+			{% endfor %}		
+		</div>				
+	</div>
+</div>
+{% endblock %}
+</div>
