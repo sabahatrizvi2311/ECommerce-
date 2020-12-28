@@ -48,8 +48,7 @@ def loginPage(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login(request, user)
-			request.session['user_id'] = user.id
-			request.session['email'] = user.email
+			request.session['user'] = user.id
 
 			return redirect('home')
 		else:
@@ -66,12 +65,19 @@ def logoutUser(request):
 class Index(View):
 	def post(self, request):
 		product = request.POST.get('product')
+		remove = request.POST.get('remove')
 		cart = request.session.get('cart')
 		if cart:
 			quantity = cart.get(product)
 			
 			if quantity:
-				cart[product] = quantity+1
+				if remove:
+					if quantity<=1:
+						cart.pop(product)
+					else:
+						cart[product] = quantity-1
+				else:
+					cart[product] = quantity+1
 			else:
 				cart[product] = 1
 		else:
@@ -84,6 +90,9 @@ class Index(View):
 
 
 	def get(self, request):
+		cart = request.session.get('cart')
+		if not cart:
+			request.session['cart'] = {}
 		products = None
 		categories = Categorie.objects.all()
 		categoryID = request.GET.get('category')
@@ -99,3 +108,10 @@ def prodview(request, myid):
 	product = Product.objects.filter(id=myid)
 	context = {'product':product[0]}
 	return render(request, 'stores/prodview.html', context)
+
+class Cart(View):
+	def get(self, request):
+		ids = list(request.session.get('cart').keys())
+		products = Product.get_products_by_id(ids)
+		context = {'products': products}
+		return render(request, 'stores/cart.html', context)

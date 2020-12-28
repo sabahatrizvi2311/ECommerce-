@@ -24,6 +24,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-info" href="/cart"><img src="static/images/carticon.webp">Cart</a>
+        </li>
         <!--drop down
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,11 +45,10 @@
           <span class="hello-msg me-2 mt-2" >{{request.user}}</span>
           <hr>
 
-
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
-        {% if not Customer %}
+        {% if request.session.user %}
           <span><a class="hello-msg btn btn-outline-info btn-sm" href="{% url 'logout' %}">Logout</a></span>
         {% else %}
           <span><a class="hello-msg btn btn-outline-info btn-sm" href="/login">Login</a></span>

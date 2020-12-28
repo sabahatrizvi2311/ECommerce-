@@ -12,6 +12,10 @@ class Product(models.Model):
 	image3 = models.ImageField(upload_to='static/images/', null=True, default="")
 
 	@staticmethod
+	def get_products_by_id(ids):
+		return Product.objects.filter(id__in=ids)
+
+	@staticmethod
 	def get_all_products_by_categoryid(category_id):
 		if category_id:
 			return Product.objects.filter(category=category_id)

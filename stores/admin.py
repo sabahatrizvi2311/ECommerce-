@@ -10,6 +10,7 @@ class AdminProduct(admin.ModelAdmin):
 class AdminCategory(admin.ModelAdmin):
 	list_display = ['id', 'title', 'subcategory']
 
+
 admin.site.register(Product, AdminProduct)
 admin.site.register(Categorie, AdminCategory)
 admin.site.register(Customer)
